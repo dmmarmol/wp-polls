@@ -5,6 +5,52 @@ var is_being_voted = false;
 pollsL10n.show_loading = parseInt(pollsL10n.show_loading);
 pollsL10n.show_fading = parseInt(pollsL10n.show_fading);
 
+/**
+ * Add class "checked" to the label next to the input checked
+ */
+(function(){
+	jQuery(document).ready(function($) {
+		var checked = 0;
+		// Single choice forms
+		$('.wp-single-poll label').click(function(){
+			var input = $(this).siblings('input');
+			$('.wp-polls-ul label').removeClass('checked');			
+			if ( !input.is(':checked') ) {
+				$(this).addClass('checked');
+			} else {
+				$(this).removeClass('checked');				
+			}
+		});
+		// Multiple Choice forms
+		$('.wp-multi-poll label').click(function(){			
+			var form = $(this).parents('form');
+			var max_ans = parseInt(form.attr('data-max-ans'));
+			var input = $(this).siblings('input');
+			if ( checked < max_ans ) {
+				if ( !input.is(':checked') ) {
+					$(this).addClass('checked');
+					// $(input).prop('checked', true); // Checks it
+					checked++;
+				}
+				else {
+					checked--;
+					$(this).removeClass('checked');				
+					// $(input).prop('checked', false); // Unchecks it										
+				}
+			} else {
+				if ( input.is(':checked') ) {
+					$(this).removeClass('checked');	
+					checked--;
+					// $(input).prop('checked', false); // Unchecks it										
+				}
+			}
+			// console.log('max_ans: '+max_ans);
+			// console.log('checked: '+ checked);
+			// console.log('input.is(\':checked\') '+input.is(':checked'));
+		});
+	});
+})();
+
 // When User Vote For Poll
 function poll_vote(current_poll_id) {
 	jQuery(document).ready(function($) {
