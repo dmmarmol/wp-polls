@@ -6,7 +6,8 @@ Tested up to: 4.3
 ### Development
 Stable tag: 2.70  
 
-This plugin is based on the "WP-Polls" plugin made by GamerS with the main difference that i've tried to remove mostly of the provided CSS and added a little of extra HTML markup to make it easier for the Developer and the designer for applying custom style
+This plugin is based on the "WP-Polls" plugin made by GamerZ with the main difference that i've removed all the provided CSS files and added a little of extra HTML markup to make it easier for the Developer and the designer for applying custom style.<a href=""></a>
+If you want to use your own CSS styles, you just have to create a file called 'polls-css.css' inside a folder called `css/` on your `theme directory`. If it doesn't exist, it will look to the same file on your `theme directory` AND if it doesn't exist, it will try to load it from your plugin folder `wp-polls/`.
 
 > Adds an AJAX poll system to your WordPress blog. You can also easily add a poll into your WordPress's blog post/page.
 
