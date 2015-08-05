@@ -45,4 +45,4 @@ If you want to use your own CSS styles, you just have to create a file called `p
 	* Deprecated. Everything you need it's inside `polls-css.css`
 * [polls-js.dev.js]
 	* Using this file insted of `poll-js.js`
-	* New function that adds a `.checked` class to the label next to the `input:checked`
+	* New function adds a `.checked` class to the label next to the `input:checked`
