@@ -112,10 +112,10 @@ if( isset($_POST['Submit']) && $_POST['Submit'] ) {
 				default_template = "<h3 id=\"wp-poll-question\" class=\"wp-poll-question\"><strong>%POLL_QUESTION%</strong></h3>\n<div id=\"polls-%POLL_ID%-ans\" class=\"wp-polls-ans\">\n<ul class=\"wp-polls-ul list\">";
 				break;
 			case "resultbody":
-				default_template = "<li class=\"item wp-result-item\"><div class=\"poll-answer\">%POLL_ANSWER%</div><div class=\"poll-bar\" style=\"width: %POLL_ANSWER_IMAGEWIDTH%%;\" title=\"%POLL_ANSWER_TEXT% (%POLL_ANSWER_PERCENTAGE%% | %POLL_ANSWER_VOTES% <?php _e('Votos', 'wp-polls'); ?>)\"></div><small class=\"poll-percentage\">(%POLL_ANSWER_PERCENTAGE%%<?php _e(',', 'wp-polls'); ?> %POLL_ANSWER_VOTES% <?php _e('Votos', 'wp-polls'); ?>)</small></li>";
+				default_template = "<li class=\"item wp-result-item\"><div class=\"poll-answer\">%POLL_ANSWER%</div><div class=\"poll-bar\" style=\"width: %POLL_ANSWER_IMAGEWIDTH%%;\" title=\"%POLL_ANSWER_TEXT% (%POLL_ANSWER_PERCENTAGE%% | %POLL_ANSWER_VOTES% <?php _e('Votos', 'wp-polls'); ?>)\"></div><small class=\"poll-percentage\">(%POLL_ANSWER_PERCENTAGE%% %POLL_ANSWER_VOTES% <?php _e('Votos', 'wp-polls'); ?>)</small></li>";
 				break;
 			case "resultbody2":
-				default_template = "<li class=\"item wp-result-item\"><div class=\"poll-answer\">%POLL_ANSWER%</div><div class=\"poll-bar\" style=\"width: %POLL_ANSWER_IMAGEWIDTH%%;\" title=\"<?php _e('You Have Voted For This Choice', 'wp-polls'); ?> - %POLL_ANSWER_TEXT% (%POLL_ANSWER_PERCENTAGE%% | %POLL_ANSWER_VOTES% <?php _e('Votos', 'wp-polls'); ?>)\"></div><small class=\"poll-percentage\">(%POLL_ANSWER_PERCENTAGE%%<?php _e(',', 'wp-polls'); ?> %POLL_ANSWER_VOTES% <?php _e('Votos', 'wp-polls'); ?>)</small></li>";
+				default_template = "<li class=\"item wp-result-item\"><div class=\"poll-answer\">%POLL_ANSWER%</div><div class=\"poll-bar\" style=\"width: %POLL_ANSWER_IMAGEWIDTH%%;\" title=\"<?php _e('You Have Voted For This Choice', 'wp-polls'); ?> - %POLL_ANSWER_TEXT% (%POLL_ANSWER_PERCENTAGE%% | %POLL_ANSWER_VOTES% <?php _e('Votos', 'wp-polls'); ?>)\"></div><small class=\"poll-percentage\">(%POLL_ANSWER_PERCENTAGE%% %POLL_ANSWER_VOTES% <?php _e('Votos', 'wp-polls'); ?>)</small></li>";
 				break;
 			case "resultfooter":
 				default_template = "</ul>\n<div class=\"wp-poll-total-votes\"><?php _e('Votos totales', 'wp-polls'); ?>: <strong>%POLL_TOTALVOTERS%</strong></div>\n</div>";

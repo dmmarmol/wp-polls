@@ -22,7 +22,6 @@ if(!current_user_can('manage_polls')) {
 	die('Access Denied');
 }
 
-
 ### Variables Variables Variables
 $base_name = plugin_basename('wp-polls/polls-options.php');
 $base_page = 'admin.php?page='.$base_name;
@@ -44,6 +43,10 @@ if( isset($_POST['Submit']) && $_POST['Submit'] ) {
 	$poll_archive_perpage = intval($_POST['poll_archive_perpage']);
 	$poll_archive_displaypoll = intval($_POST['poll_archive_displaypoll']);
 	$poll_archive_url = strip_tags(trim($_POST['poll_archive_url']));
+	/** 2.70 */
+	$poll_archive_show_total_votes = intval($_POST['show_total_votes']);
+	$poll_archive_show_each_vote = intval($_POST['show_each_vote']);
+
 	$poll_archive_show = intval($_POST['poll_archive_show']);
 	$poll_currentpoll = intval($_POST['poll_currentpoll']);
 	$poll_close = intval($_POST['poll_close']);
@@ -52,6 +55,7 @@ if( isset($_POST['Submit']) && $_POST['Submit'] ) {
 	$poll_allowtovote = intval($_POST['poll_allowtovote']);
 	$update_poll_queries = array();
 	$update_poll_text = array();
+
 	$update_poll_queries[] = update_option('poll_bar', $poll_bar);
 	$update_poll_queries[] = update_option('poll_ajax_style', $poll_ajax_style);
 	$update_poll_queries[] = update_option('poll_ans_sortby', $poll_ans_sortby);
@@ -61,6 +65,15 @@ if( isset($_POST['Submit']) && $_POST['Submit'] ) {
 	$update_poll_queries[] = update_option('poll_archive_perpage', $poll_archive_perpage);
 	$update_poll_queries[] = update_option('poll_archive_displaypoll', $poll_archive_displaypoll);
 	$update_poll_queries[] = update_option('poll_archive_url', $poll_archive_url);
+	/** 2.70 */	
+	$update_poll_queries[] = update_option('poll_archive_show_total_votes', $poll_archive_show_total_votes);	
+	$update_poll_queries[] = update_option('poll_archive_show_each_vote', $poll_archive_show_each_vote);	
+	
+	// add_action('poll_archive_show_each_vote', 0);
+	// var_dump( get_option('poll_archive_show_each_vote') );
+	// exit();
+
+
 	$update_poll_queries[] = update_option('poll_archive_show', $poll_archive_show);
 	$update_poll_queries[] = update_option('poll_currentpoll', $poll_currentpoll);
 	$update_poll_queries[] = update_option('poll_close', $poll_close);
@@ -295,6 +308,7 @@ if( isset($_POST['Submit']) && $_POST['Submit'] ) {
 			<th scope="row" valign="top"><?php _e('Expiry Time For Cookie And Log:', 'wp-polls'); ?></th>
 			<td><input type="text" name="poll_cookielog_expiry" value="<?php echo intval(get_option('poll_cookielog_expiry')); ?>" size="10" /> <?php _e('seconds (0 to disable)', 'wp-polls'); ?></td>
 		</tr>
+
 	</table>
 
 	<!-- Poll Archive -->
@@ -327,6 +341,32 @@ if( isset($_POST['Submit']) && $_POST['Submit'] ) {
 				</select>
 			</td>
 		</tr>
+		<?php /** @version 2.70 */ ?>
+		<tr>
+			<th scope="row" valign="top">
+				<?php _e('Show total votes', 'wp-polls'); ?><br>
+				<small><em><?php _e('Muestra la cantidad de votos totales'); ?></em></small>
+			</th>
+			<td colspan="2" dir="ltr">
+				<label for="show_total_votes"><?php _e('Yes'); ?></label>
+				<input type="radio" name="show_total_votes" id="show_total_votes" value="1" <?php echo ($poll_archive_show_total_votes)?'checked="checked"':false; ?>>
+				<label for="hide_total_votes"><?php _e('No'); ?></label>
+				<input type="radio" name="show_total_votes" id="hide_total_votes" value="0" <?php echo (!$poll_archive_show_total_votes)?'checked="checked"':false; ?>>				
+			</td>
+		</tr>
+		<tr>
+			<th scope="row" valign="top">
+				<?php _e('Show each vote', 'wp-polls'); ?><br>
+				<small><em><?php _e('Muestra la cantidad de votos por opción'); ?></em></small>
+			</th>
+			<td colspan="2" dir="ltr">
+				<label for="show_each_vote"><?php _e('Yes'); ?></label>
+				<input type="radio" name="show_each_vote" id="show_each_vote" value="1" <?php echo ($poll_archive_show_each_vote)?'checked="checked"':false; ?>>
+				<label for="hide_each_vote"><?php _e('No'); ?></label>
+				<input type="radio" name="show_each_vote" id="hide_each_vote" value="0" <?php echo (!$poll_archive_show_each_vote)?'checked="checked"':false; ?>>								
+			</td>
+		</tr>
+		<?php /** end 2.70 */ ?>
 		<tr>
 			<th scope="row" valign="top"><?php _e('Note', 'wp-polls'); ?></th>
 			<td><em><?php _e('Only polls\' results will be shown in the Poll Archive regardless of whether the poll is closed or opened.', 'wp-polls'); ?></em></td>

@@ -37,6 +37,8 @@ $option_names = array(
 	, 'poll_template_pollarchivefooter'
 	, 'poll_cookielog_expiry'
 	, 'widget_polls-widget'
+	/** 2.70 */
+	, 'poll_archive_show_total_votes'
 );
 
 

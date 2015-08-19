@@ -665,7 +665,11 @@ function display_pollresult($poll_id, $user_voted = '', $display_loading = true)
 				$template_answer = str_replace("%POLL_ANSWER_ID%", $poll_answer_id, $template_answer);
 				$template_answer = str_replace("%POLL_ANSWER%", $poll_answer_text, $template_answer);
 				$template_answer = str_replace("%POLL_ANSWER_TEXT%", htmlspecialchars(strip_tags($poll_answer_text)), $template_answer);
-				$template_answer = str_replace("%POLL_ANSWER_VOTES%", number_format_i18n($poll_answer_votes), $template_answer);
+				if ( get_option('poll_archive_show_each_vote') ) {
+					$template_answer = str_replace("%POLL_ANSWER_VOTES%", number_format_i18n($poll_answer_votes), $template_answer);
+				} else {					
+					$template_answer = str_replace("%POLL_ANSWER_VOTES%", '', $template_answer);
+				}
 				$template_answer = str_replace("%POLL_ANSWER_PERCENTAGE%", $poll_answer_percentage, $template_answer);
 				$template_answer = str_replace("%POLL_ANSWER_IMAGEWIDTH%", $poll_answer_imagewidth, $template_answer);
 				// Print Out Results Body Template
@@ -677,7 +681,11 @@ function display_pollresult($poll_id, $user_voted = '', $display_loading = true)
 				$template_answer = str_replace("%POLL_ANSWER_ID%", $poll_answer_id, $template_answer);
 				$template_answer = str_replace("%POLL_ANSWER%", $poll_answer_text, $template_answer);
 				$template_answer = str_replace("%POLL_ANSWER_TEXT%", htmlspecialchars(strip_tags($poll_answer_text)), $template_answer);
-				$template_answer = str_replace("%POLL_ANSWER_VOTES%", number_format_i18n($poll_answer_votes), $template_answer);
+				if ( get_option('poll_archive_show_each_vote') ) {
+					$template_answer = str_replace("%POLL_ANSWER_VOTES%", number_format_i18n($poll_answer_votes), $template_answer);
+				} else {					
+					$template_answer = str_replace("%POLL_ANSWER_VOTES%", '', $template_answer);
+				}
 				$template_answer = str_replace("%POLL_ANSWER_PERCENTAGE%", $poll_answer_percentage, $template_answer);
 				$template_answer = str_replace("%POLL_ANSWER_IMAGEWIDTH%", $poll_answer_imagewidth, $template_answer);
 				// Print Out Results Body Template
@@ -699,11 +707,14 @@ function display_pollresult($poll_id, $user_voted = '', $display_loading = true)
 				$poll_least_percentage = $poll_answer_percentage;
 			}
 		}
-		// Results Footer Variables
-		if(!empty($user_voted) || $poll_question_active == 0 || !check_allowtovote()) {
-			$template_footer = stripslashes(get_option('poll_template_resultfooter'));
-		} else {
-			$template_footer = stripslashes(get_option('poll_template_resultfooter2'));
+		// 2.70
+		if ( get_option('poll_archive_show_total_votes') ) {
+			// Results Footer Variables
+			if(!empty($user_voted) || $poll_question_active == 0 || !check_allowtovote()) {
+				$template_footer = stripslashes(get_option('poll_template_resultfooter'));
+			} else {
+				$template_footer = stripslashes(get_option('poll_template_resultfooter2'));
+			}			
 		}
 		$template_footer = str_replace("%POLL_START_DATE%", $poll_start_date, $template_footer);
 		$template_footer = str_replace("%POLL_END_DATE%", $poll_end_date, $template_footer);
@@ -1076,7 +1087,11 @@ function polls_archive() {
 				$template_answer = str_replace("%POLL_ANSWER_ID%", $polls_answer['aid'], $template_answer);
 				$template_answer = str_replace("%POLL_ANSWER%", $polls_answer['answers'], $template_answer);
 				$template_answer = str_replace("%POLL_ANSWER_TEXT%", htmlspecialchars(strip_tags($polls_answer['answers'])), $template_answer);
-				$template_answer = str_replace("%POLL_ANSWER_VOTES%", number_format_i18n($polls_answer['votes']), $template_answer);
+				if ( get_option('poll_archive_show_each_vote') ) {
+					$template_answer = str_replace("%POLL_ANSWER_VOTES%", number_format_i18n($polls_answer['votes']), $template_answer);
+				} else {					
+					$template_answer = str_replace("%POLL_ANSWER_VOTES%", '', $template_answer);
+				}
 				$template_answer = str_replace("%POLL_ANSWER_PERCENTAGE%", $poll_answer_percentage, $template_answer);
 				$template_answer = str_replace("%POLL_ANSWER_IMAGEWIDTH%", $poll_answer_imagewidth, $template_answer);
 				// Print Out Results Body Template
@@ -1088,7 +1103,11 @@ function polls_archive() {
 				$template_answer = str_replace("%POLL_ANSWER_ID%", $polls_answer['aid'], $template_answer);
 				$template_answer = str_replace("%POLL_ANSWER%", $polls_answer['answers'], $template_answer);
 				$template_answer = str_replace("%POLL_ANSWER_TEXT%", htmlspecialchars(strip_tags($polls_answer['answers'])), $template_answer);
-				$template_answer = str_replace("%POLL_ANSWER_VOTES%", number_format_i18n($polls_answer['votes']), $template_answer);
+				if ( get_option('poll_archive_show_each_vote') ) {
+					$template_answer = str_replace("%POLL_ANSWER_VOTES%", number_format_i18n($polls_answer['votes']), $template_answer);
+				} else {					
+					$template_answer = str_replace("%POLL_ANSWER_VOTES%", '', $template_answer);
+				}
 				$template_answer = str_replace("%POLL_ANSWER_PERCENTAGE%", $poll_answer_percentage, $template_answer);
 				$template_answer = str_replace("%POLL_ANSWER_IMAGEWIDTH%", $poll_answer_imagewidth, $template_answer);
 				// Print Out Results Body Template
@@ -1764,15 +1783,22 @@ function polls_activate() {
 	add_option('poll_template_resultheader', '<h3 id="wp-poll-question" class="wp-poll-question"><strong>%POLL_QUESTION%</strong></h3>'.
 	'<div id="polls-%POLL_ID%-ans" class="wp-polls-ans">'.
 	'<ul class="wp-polls-ul list">');
+	
 	add_option('poll_template_resultbody', '<li class="item wp-result-item"><div class="poll-answer">%POLL_ANSWER%</div><div class="poll-bar" style="width: %POLL_ANSWER_IMAGEWIDTH%%;" title="%POLL_ANSWER_TEXT% (%POLL_ANSWER_PERCENTAGE%% | %POLL_ANSWER_VOTES% '.__('Votos', 'wp-polls').')"></div><small class="poll-percentage">(%POLL_ANSWER_PERCENTAGE%%'.__(',', 'wp-polls').' %POLL_ANSWER_VOTES% '.__('Votos', 'wp-polls').')</small></li>');
 	add_option('poll_template_resultbody', '<li class="item wp-result-item"><div class="poll-answer">%POLL_ANSWER%</div><div class="poll-bar" style="width: %POLL_ANSWER_IMAGEWIDTH%%;" title="'.__('You Have Voted For This Choice', 'wp-polls').' - %POLL_ANSWER_TEXT% (%POLL_ANSWER_PERCENTAGE%% | %POLL_ANSWER_VOTES% '.__('Votos', 'wp-polls').')"></div><small class="poll-percentage">(%POLL_ANSWER_PERCENTAGE%%'.__(',', 'wp-polls').' %POLL_ANSWER_VOTES% '.__('Votos', 'wp-polls').')</small></li>');
-//	add_option('poll_template_resultbody2', '<li><strong><i>%POLL_ANSWER% <small>(%POLL_ANSWER_PERCENTAGE%%'.__(',', 'wp-polls').' %POLL_ANSWER_VOTES% '.__('Votos', 'wp-polls').')</small></i></strong><div class="pollbar" style="width: %POLL_ANSWER_IMAGEWIDTH%%;" title="'.__('You Have Voted For This Choice', 'wp-polls').' - %POLL_ANSWER_TEXT% (%POLL_ANSWER_PERCENTAGE%% | %POLL_ANSWER_VOTES% '.__('Votos', 'wp-polls').')"></div></li>');
+
+	//	add_option('poll_template_resultbody2', '<li><strong><i>%POLL_ANSWER% <small>(%POLL_ANSWER_PERCENTAGE%%'.__(',', 'wp-polls').' %POLL_ANSWER_VOTES% '.__('Votos', 'wp-polls').')</small></i></strong><div class="pollbar" style="width: %POLL_ANSWER_IMAGEWIDTH%%;" title="'.__('You Have Voted For This Choice', 'wp-polls').' - %POLL_ANSWER_TEXT% (%POLL_ANSWER_PERCENTAGE%% | %POLL_ANSWER_VOTES% '.__('Votos', 'wp-polls').')"></div></li>');
+	/** 2.70 */
+	add_action('poll_archive_show_total_votes', 0);
+	add_action('poll_archive_show_each_vote', 0);
+
 	add_option('poll_template_resultfooter', '</ul>'.
 	'<div class="wp-poll-total-votes">'.__('Votos totales', 'wp-polls').': <strong>%POLL_TOTALVOTERS%</strong></p>'.'</div>');
 	add_option('poll_template_resultfooter2', '</ul>'.
 	'<div class="wp-poll-total-votes">'.__('Votos totales', 'wp-polls').': <strong>%POLL_TOTALVOTERS%</strong></div>'.'<div class="input-row">'.
 	'<a href="#VotePoll" class="wp-poll-submit button button-green button-medium button-inline-block" role="button" onclick="poll_booth(%POLL_ID%); return false;" title="'.__('Vote For This Poll', 'wp-polls').'">'.__('Ver opciones', 'wp-polls').'</a></div>'.
 	'</div>');
+
 	add_option('poll_template_disable', __('Sorry, there are no polls available at the moment.', 'wp-polls'));
 	add_option('poll_template_error', __('An error has occurred when processing your poll.', 'wp-polls'));
 	add_option('poll_currentpoll', 0);
