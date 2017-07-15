@@ -1,0 +1,11 @@
+{
+    "name": "dmmarmol/wp-polls",
+    "description": "Custom Fork fromlesterchan/wp-polls",
+    "authors": [
+        {
+            "name": "Diego Martín Mármol",
+            "email": "diegomartinmarmol@gmail.com"
+        }
+    ],
+    "require": {}
+}
